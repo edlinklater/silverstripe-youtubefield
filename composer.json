@@ -11,6 +11,9 @@
 		}
 	],
 	"require": {
-		"silverstripe/framework": "~3.0",
+		"silverstripe/framework": "~3.0"
+	},
+	"extra": {
+		"installer-name": "youtubefield"
 	}
 }
