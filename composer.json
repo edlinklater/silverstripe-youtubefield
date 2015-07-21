@@ -1,0 +1,16 @@
+{
+	"name": "silverstripe-rebelalliance/youtubefield",
+	"description": "Field for selecting YouTube videos. Takes various URL formats as input and stores the YouTube ID.",
+	"type": "silverstripe-module",
+	"keywords": ["silverstripe", "youtube", "formfield"],
+	"license": "BSD-3-Clause",
+	"authors": [
+		{
+			"name": "Ed Linklater",
+			"email": "ed@silverstripe.com"
+		}
+	],
+	"require": {
+		"silverstripe/framework": "~3.0",
+	}
+}

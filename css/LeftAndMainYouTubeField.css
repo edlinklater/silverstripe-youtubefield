@@ -1,0 +1,7 @@
+.field input.youtube {
+    background-image: url('../images/field-icon-youtube.png');
+    background-size: 28px 20px;
+    background-repeat: no-repeat;
+    background-position: 6px center;
+    padding-left: 40px;
+}
