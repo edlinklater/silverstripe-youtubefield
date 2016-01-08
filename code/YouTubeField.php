@@ -8,7 +8,17 @@ class YouTubeField extends TextField {
 	 * (optional) YouTube API key valid for this site. Used for displaying video information within the CMS.
 	 * @link https://developers.google.com/youtube/v3/
 	 */
-	private static $api_key = '';
+	private static $api_key;
+
+	public function Field($properties = array()) {
+		if($api_key = $this->config()->get('api_key')) {
+			$this->setAttribute('data-apikey', $api_key);
+			Requirements::javascript(SS_YOUTUBEFIELD_DIRECTORY . '/javascript/YouTubeField.js');
+			Requirements::javascript('https://apis.google.com/js/client.js?onload=googleApiClientReady');
+		}
+
+		return parent::Field($properties);
+	}
 
 	public function dataValue() {
 		return self::url_parser($this->value);

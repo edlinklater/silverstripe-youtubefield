@@ -7,12 +7,27 @@ various common YouTube URL formats and converts them for storage in database as 
 
 ## Requirements
 
- * SilverStripe 3.0+
+ * silverstripe/framework 3.0+ for basic field and URL parser
+ * silverstripe/framework 3.3+ for video information support
 
-## Configuration
+## Basic field
 
-Optionally you can provide a key for the YouTube v3 API. Currently this has no function, but in future it will be used
-to display video information (title, thumbnail, length) under the field when a valid ID has been provided.
+    private static $db = array(
+        'VideoID' => 'Varchar(11)',
+    );
+
+    public static getCMSFields() {
+        $fields = parent::getCMSFields();
+        $fields->addFieldToTab('Root.Main', new YouTubeField('VideoID', 'YouTube Video'));
+        return $fields;
+    }
+
+## Video Information
+
+Optionally you can provide a key for the YouTube v3 API, which is used to display video information (title, thumbnail,
+length) under the field when a valid ID has been provided.
+
+![Screenshot of Video Information](https://cloud.githubusercontent.com/assets/1176635/10863696/39612420-803c-11e5-8940-95e190c06545.png)
 
 *mysite/_config/youtubefield.yml*
 
