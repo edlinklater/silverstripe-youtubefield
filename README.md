@@ -16,7 +16,7 @@ various common YouTube URL formats and converts them for storage in database as 
         'VideoID' => 'Varchar(11)',
     );
 
-    public static getCMSFields() {
+    public function getCMSFields() {
         $fields = parent::getCMSFields();
         $fields->addFieldToTab('Root.Main', new YouTubeField('VideoID', 'YouTube Video'));
         return $fields;
