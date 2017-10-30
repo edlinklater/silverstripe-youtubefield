@@ -1,6 +1,5 @@
-(function ($) {
-    $.entwine(function ($) {
-
+(function($) {
+    $.entwine(function($) {
         $('input.youtube').entwine({
             onmatch: function () {
                 if (this.val().length > 0) {
@@ -11,17 +10,21 @@
                 getYouTubeSnippet(this);
             }
         });
-
     });
 }(jQuery));
 
 function getYouTubeSnippet(element) {
+    var api_data = element.data('apidata');
     var api_key = element.data('apikey');
     var youtube_id = element.val().match(/[a-zA-Z0-9_-]{11}/);
 
     if (!youtube_id) {
         element.parent().removeClass('youtube-active');
         return false;
+    }
+
+    if (api_data) {
+        return showYouTubeSnippet(element, api_data);
     }
 
     var yt = JSON.parse(localStorage.getItem('youtube-' + youtube_id[0]));
@@ -51,11 +54,14 @@ function showYouTubeSnippet(element, yt) {
     element.parent().addClass('youtube-active');
     infobox.find('.youtube-info-title a').text(yt.snippet.title);
     infobox.find('.youtube-info-title a').attr('href', 'https://www.youtube.com/watch?v=' + yt.id);
-    infobox.find('.youtube-info-more').html([
-        '<strong>' + yt.snippet.channelTitle + '</strong>',
-        'Duration: ' + parseYouTubeDuration(yt.contentDetails.duration),
-        'Views: ' + parseInt(yt.statistics.viewCount).toLocaleString()
-    ].join(' &middot; '));
+    var more = ['<strong>' + yt.snippet.channelTitle + '</strong>'];
+    if (typeof yt.contentDetails !== 'undefined' && typeof yt.contentDetails.duration !== 'undefined') {
+        more.push('Duration: ' + parseYouTubeDuration(yt.contentDetails.duration));
+    }
+    if (typeof yt.statistics !== 'undefined' && typeof yt.statistics.viewCount !== 'undefined') {
+        more.push('Views: ' + parseInt(yt.statistics.viewCount).toLocaleString());
+    }
+    infobox.find('.youtube-info-more').html(more.join(' &middot; '));
     infobox.find('.youtube-info-thumb').attr('src', yt.snippet.thumbnails.default.url);
 
     return true;
