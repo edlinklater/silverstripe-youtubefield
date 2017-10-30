@@ -2,44 +2,55 @@
 
 ## Introduction
 
-This SilverStripe module provides a simple YouTube field, primarily for use in the CMS/ModelAdmin. It accepts input of
-various common YouTube URL formats and converts them for storage in database as the 11-character YouTube ID.
+This SilverStripe module provides a YouTube field for use in the CMS/ModelAdmin. It accepts input of various common
+YouTube URL formats and converts them for storage in database as the 11-character YouTube ID.
+
+Once a valid ID is saved the field will display the video's thumbnail and title.
+
+Optionally you can provide a key for the YouTube v3 API, which is used to display additional information (duration and
+view count) and provides information immediately (rather than after saving).
+
+![Screenshot of Video Information](https://cloud.githubusercontent.com/assets/1176635/10863696/39612420-803c-11e5-8940-95e190c06545.png)
 
 ## Requirements
 
- * silverstripe/framework 3.0+ for basic field and URL parser
- * silverstripe/framework 3.3+ for video information support
+ * silverstripe/framework 3.3+
 
 ## Basic field
+
+*mysite/code/Page.php*
+
+```php
+<?php
+
+class Page extends SiteTree
+{
 
     private static $db = array(
         'VideoID' => 'Varchar(11)',
     );
-
+    
     public function getCMSFields() {
         $fields = parent::getCMSFields();
         $fields->addFieldToTab('Root.Main', new YouTubeField('VideoID', 'YouTube Video'));
         return $fields;
     }
+    
+}
+```
 
-## Video Information
+*mysite/_config/config.yml*
 
-Optionally you can provide a key for the YouTube v3 API, which is used to display video information (title, thumbnail,
-length) under the field when a valid ID has been provided.
-
-![Screenshot of Video Information](https://cloud.githubusercontent.com/assets/1176635/10863696/39612420-803c-11e5-8940-95e190c06545.png)
-
-*mysite/_config/youtubefield.yml*
-
-	---
-	name: youtubefield
-	---
-	YouTubeField:
-	  api_key: YOUR_API_KEY
+```yaml
+YouTubeField:
+  api_key: YOUR_API_KEY
+```
 
 ## URL Parser
 
 There is a static function which can be called (without using the YouTubeField) to simply retrieve the YouTube ID from
 a supported URL format.
 
-	YouTubeField::url_parser($url);
+```php
+YouTubeField::url_parser($url);
+```

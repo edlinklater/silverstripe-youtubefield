@@ -7,11 +7,12 @@
 	"authors": [
 		{
 			"name": "Ed Linklater",
-			"email": "ed@silverstripe.com"
+			"email": "ed@edgar.industries"
 		}
 	],
 	"require": {
-		"silverstripe/framework": "~3.0"
+		"silverstripe/framework": "~3.3",
+        "guzzlehttp/guzzle": "~6.0"
 	},
 	"extra": {
 		"installer-name": "youtubefield"
