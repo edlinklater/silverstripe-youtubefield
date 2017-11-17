@@ -15,7 +15,8 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"RebelAlliance\\YouTubeField\\": "src/"
+			"RebelAlliance\\YouTubeField\\": "src/",
+			"RebelAlliance\\YouTubeField\\Tests\\": "tests/"
 		}
 	},
 	"extra": {
