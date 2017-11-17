@@ -36,10 +36,10 @@ class YouTubeField extends TextField
 	 *
 	 * @return string Right Title, or an explanatory default if none set
 	 */
-	public function RightTitle()
+	public function getDescription()
     {
-		if (!empty($this->rightTitle)) {
-			return $this->rightTitle;
+		if (!empty($this->description)) {
+			return $this->description;
 		} else {
 			return 'YouTube video URL or ID. Must be a single video, not a playlist or channel.';
 		}
