@@ -1,5 +1,5 @@
 {
-	"name": "silverstripe-rebelalliance/youtubefield",
+	"name": "edgarindustries/youtubefield",
 	"description": "Field for selecting YouTube videos. Takes various URL formats as input and stores the YouTube ID.",
 	"type": "silverstripe-vendormodule",
 	"keywords": ["silverstripe", "youtube", "formfield"],
@@ -15,8 +15,8 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"RebelAlliance\\YouTubeField\\": "src/",
-			"RebelAlliance\\YouTubeField\\Tests\\": "tests/"
+			"EdgarIndustries\\YouTubeField\\": "src/",
+			"EdgarIndustries\\YouTubeField\\Tests\\": "tests/"
 		}
 	},
 	"extra": {

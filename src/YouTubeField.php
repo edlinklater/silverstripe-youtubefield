@@ -1,6 +1,6 @@
 <?php
 
-namespace RebelAlliance\YouTubeField;
+namespace EdgarIndustries\YouTubeField;
 
 use SilverStripe\Forms\TextField;
 use SilverStripe\View\Requirements;

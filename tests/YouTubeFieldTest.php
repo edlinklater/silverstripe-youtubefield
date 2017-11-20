@@ -1,8 +1,8 @@
 <?php
 
-namespace RebelAlliance\YouTubeField\Tests;
+namespace EdgarIndustries\YouTubeField\Tests;
 
-use RebelAlliance\YouTubeField\YouTubeField;
+use EdgarIndustries\YouTubeField\YouTubeField;
 use SilverStripe\Dev\SapphireTest;
 
 class YouTubeFieldTest extends SapphireTest
