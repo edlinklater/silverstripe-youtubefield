@@ -1,5 +1,9 @@
 <?php
 
+
+use SilverStripe\Forms\TextField;
+use SilverStripe\View\Requirements;
+
 class YouTubeField extends TextField {
 
 	/**
