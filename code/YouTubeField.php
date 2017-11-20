@@ -1,6 +1,7 @@
 <?php
 
-class YouTubeField extends TextField {
+class YouTubeField extends TextField
+{
 
 	/**
 	 * @var string
@@ -10,17 +11,37 @@ class YouTubeField extends TextField {
 	 */
 	private static $api_key;
 
-	public function Field($properties = array()) {
-		if($api_key = $this->config()->get('api_key')) {
+	public function Field($properties = array())
+    {
+        Requirements::javascript(SS_YOUTUBEFIELD_DIRECTORY . '/javascript/YouTubeField.js');
+
+		if ($api_key = $this->config()->get('api_key')) {
 			$this->setAttribute('data-apikey', $api_key);
-			Requirements::javascript(SS_YOUTUBEFIELD_DIRECTORY . '/javascript/YouTubeField.js');
 			Requirements::javascript('https://apis.google.com/js/client.js?onload=googleApiClientReady');
-		}
+		} elseif (!empty($this->value) && self::url_parser($this->value)) {
+		    $client = new GuzzleHttp\Client();
+		    $res = $client->get('https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=' . $this->value . '&format=json');
+		    if ($res->getStatusCode() == '200' && $data = json_decode($res->getBody())) {
+		        $api_data = new stdClass();
+                $api_data->id = $this->value;
+                $api_data->snippet = new stdClass();
+		        $api_data->snippet->title = $data->title;
+                if (preg_match('/user\/([\w-]+)/', $data->author_url, $author)) {
+                    $api_data->snippet->channelTitle = $author[1];
+                }
+                $api_data->snippet->thumbnails = new stdClass();
+                $api_data->snippet->thumbnails->default = new stdClass();
+                $api_data->snippet->thumbnails->default->url = $data->thumbnail_url;
+
+                $this->setAttribute('data-apidata', json_encode($api_data));
+            }
+        }
 
 		return parent::Field($properties);
 	}
 
-	public function dataValue() {
+	public function dataValue()
+    {
 		return self::url_parser($this->value);
 	}
 
@@ -29,15 +50,17 @@ class YouTubeField extends TextField {
 	 *
 	 * @return string Right Title, or an explanatory default if none set
 	 */
-	public function RightTitle() {
-		if(!empty($this->rightTitle)) {
+	public function RightTitle()
+    {
+		if (!empty($this->rightTitle)) {
 			return $this->rightTitle;
 		} else {
 			return 'YouTube video URL or ID. Must be a single video, not a playlist or channel.';
 		}
 	}
 
-	public function Type() {
+	public function Type()
+    {
 		return 'text youtube';
 	}
 
@@ -48,7 +71,8 @@ class YouTubeField extends TextField {
 	 *
 	 * @return string|false YouTube Video ID, or false if no ID found
 	 */
-	public static function url_parser($url) {
+	public static function url_parser($url)
+    {
 		$regex = '/(?<=v=|v\/|vi=|vi\/|youtu.be\/|embed\/)([a-zA-Z0-9_-]{11})/';
 
 		if (!empty($url)) {
@@ -57,7 +81,7 @@ class YouTubeField extends TextField {
 				if (preg_match($regex, $url, $matches)) {
 					return $matches[1];
 				}
-			} elseif(strlen($url) == 11) {
+			} elseif (strlen($url) == 11) {
 				return $url;
 			}
 		}
