@@ -1,13 +1,13 @@
-(function($) {
-    $.entwine(function($) {
+(function ($) {
+    $.entwine(function ($) {
 
         $('input.youtube').entwine({
-            onmatch: function() {
+            onmatch: function () {
                 if (this.val().length > 0) {
                     getYouTubeSnippet(this);
                 }
             },
-            onkeyup: function() {
+            onkeyup: function () {
                 getYouTubeSnippet(this);
             }
         });
@@ -16,16 +16,16 @@
 }(jQuery));
 
 function getYouTubeSnippet(element) {
-	var api_key = element.data('apikey');
-	var youtube_id = element.val().match(/[a-zA-Z0-9_-]{11}/);
+    var api_key = element.data('apikey');
+    var youtube_id = element.val().match(/[a-zA-Z0-9_-]{11}/);
 
-	if (!youtube_id) {
+    if (!youtube_id) {
         element.parent().removeClass('youtube-active');
         return false;
     }
 
     var yt = JSON.parse(localStorage.getItem('youtube-' + youtube_id[0]));
-	if (yt) {
+    if (yt) {
         return showYouTubeSnippet(element, yt);
     }
 
@@ -35,10 +35,10 @@ function getYouTubeSnippet(element) {
         key: api_key
     });
 
-    request.execute(function(response) {
+    request.execute(function (response) {
         var yt = response.items[0];
 
-        if(typeof yt !== 'undefined') {
+        if (typeof yt !== 'undefined') {
             localStorage.setItem('youtube-' + youtube_id[0], JSON.stringify(yt));
             return showYouTubeSnippet(element, yt);
         }
@@ -62,9 +62,13 @@ function showYouTubeSnippet(element, yt) {
 }
 
 function googleApiClientReady() {
-    gapi.client.load('youtube', 'v3', function() {
+    gapi.client.load('youtube', 'v3', function () {
         getYouTubeSnippet(jQuery('input.youtube'));
     });
 }
 
-function parseYouTubeDuration(e){var n=e.replace(/D|H|M/g,":").replace(/P|T|S/g,"").split(":");if(1==n.length)2!=n[0].length&&(n[0]="0"+n[0]),n[0]="0:"+n[0];else for(var r=1,l=n.length-1;l>=r;r++)2!=n[r].length&&(n[r]="0"+n[r]);return n.join(":")}
+function parseYouTubeDuration(e) {
+    var n = e.replace(/D|H|M/g, ":").replace(/P|T|S/g, "").split(":");
+    if (1 == n.length) 2 != n[0].length && (n[0] = "0" + n[0]), n[0] = "0:" + n[0]; else for (var r = 1, l = n.length - 1; l >= r; r++)2 != n[r].length && (n[r] = "0" + n[r]);
+    return n.join(":")
+}
