@@ -14,7 +14,7 @@ view count) and provides information immediately (rather than after saving).
 
 ## Requirements
 
- * silverstripe/framework ^4.0
+ * silverstripe/framework ^4.0 _(See `1` branch for SilverStripe 3 compatibility)_
 
 ## Basic field
 
