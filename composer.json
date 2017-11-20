@@ -1,5 +1,5 @@
 {
-	"name": "silverstripe-rebelalliance/youtubefield",
+	"name": "silverstripe-terraformers/youtubefield",
 	"description": "Field for selecting YouTube videos. Takes various URL formats as input and stores the YouTube ID.",
 	"type": "silverstripe-module",
 	"keywords": ["silverstripe", "youtube", "formfield"],
