@@ -1,7 +1,12 @@
 <?php
 
-class YouTubeField extends TextField {
+namespace RebelAlliance\YouTubeField;
 
+use SilverStripe\Forms\TextField;
+use SilverStripe\View\Requirements;
+
+class YouTubeField extends TextField
+{
 	/**
 	 * @var string
 	 * @config
@@ -10,10 +15,12 @@ class YouTubeField extends TextField {
 	 */
 	private static $api_key;
 
-	public function Field($properties = array()) {
-		if($api_key = $this->config()->get('api_key')) {
+	public function Field($properties = [])
+    {
+		if ($api_key = $this->config()->get('api_key')) {
 			$this->setAttribute('data-apikey', $api_key);
-			Requirements::javascript(SS_YOUTUBEFIELD_DIRECTORY . '/javascript/YouTubeField.js');
+            Requirements::css('silverstripe-rebelalliance/youtubefield: client/css/YouTubeField.css');
+            Requirements::javascript('silverstripe-rebelalliance/youtubefield: client/js/YouTubeField.js');
 			Requirements::javascript('https://apis.google.com/js/client.js?onload=googleApiClientReady');
 		}
 
@@ -29,15 +36,17 @@ class YouTubeField extends TextField {
 	 *
 	 * @return string Right Title, or an explanatory default if none set
 	 */
-	public function RightTitle() {
-		if(!empty($this->rightTitle)) {
-			return $this->rightTitle;
+	public function getDescription()
+    {
+		if (!empty($this->description)) {
+			return $this->description;
 		} else {
 			return 'YouTube video URL or ID. Must be a single video, not a playlist or channel.';
 		}
 	}
 
-	public function Type() {
+	public function Type()
+    {
 		return 'text youtube';
 	}
 
@@ -48,7 +57,8 @@ class YouTubeField extends TextField {
 	 *
 	 * @return string|false YouTube Video ID, or false if no ID found
 	 */
-	public static function url_parser($url) {
+	public static function url_parser($url)
+    {
 		$regex = '/(?<=v=|v\/|vi=|vi\/|youtu.be\/|embed\/)([a-zA-Z0-9_-]{11})/';
 
 		if (!empty($url)) {
@@ -57,7 +67,7 @@ class YouTubeField extends TextField {
 				if (preg_match($regex, $url, $matches)) {
 					return $matches[1];
 				}
-			} elseif(strlen($url) == 11) {
+			} elseif (strlen($url) == 11) {
 				return $url;
 			}
 		}

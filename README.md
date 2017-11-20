@@ -18,7 +18,7 @@ various common YouTube URL formats and converts them for storage in database as 
 
     public function getCMSFields() {
         $fields = parent::getCMSFields();
-        $fields->addFieldToTab('Root.Main', new YouTubeField('VideoID', 'YouTube Video'));
+        $fields->addFieldToTab('Root.Main', new \RebelAlliance\YouTubeField\YouTubeField('VideoID', 'YouTube Video'));
         return $fields;
     }
 
@@ -34,12 +34,12 @@ length) under the field when a valid ID has been provided.
 	---
 	name: youtubefield
 	---
-	YouTubeField:
-	  api_key: YOUR_API_KEY
+	RebelAlliance\YouTubeField\YouTubeField:
+      api_key: 'YOUR_API_KEY'
 
 ## URL Parser
 
 There is a static function which can be called (without using the YouTubeField) to simply retrieve the YouTube ID from
 a supported URL format.
 
-	YouTubeField::url_parser($url);
+	\RebelAlliance\YouTubeField\YouTubeField::url_parser($url);
