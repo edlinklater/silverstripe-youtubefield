@@ -3,6 +3,7 @@
 namespace EdgarIndustries\YouTubeField;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use SilverStripe\Forms\TextField;
 use SilverStripe\View\Requirements;
 
@@ -26,21 +27,23 @@ class YouTubeField extends TextField
             Requirements::javascript('https://apis.google.com/js/client.js?onload=googleApiClientReady');
         } elseif (!empty($this->value) && self::url_parser($this->value)) {
             $client = new Client();
-            $res = $client->get('https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=' . $this->value . '&format=json');
-            if ($res->getStatusCode() == '200' && $data = json_decode($res->getBody())) {
-                $api_data = new \stdClass();
-                $api_data->id = $this->value;
-                $api_data->snippet = new \stdClass();
-                $api_data->snippet->title = $data->title;
-                if (preg_match('/user\/([\w-]+)/', $data->author_url, $author)) {
-                    $api_data->snippet->channelTitle = $author[1];
-                }
-                $api_data->snippet->thumbnails = new \stdClass();
-                $api_data->snippet->thumbnails->default = new \stdClass();
-                $api_data->snippet->thumbnails->default->url = $data->thumbnail_url;
+            try {
+                $res = $client->get('https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=' . $this->value . '&format=json');
+                if ($res->getStatusCode() == '200' && $data = json_decode($res->getBody())) {
+                    $api_data = new \stdClass();
+                    $api_data->id = $this->value;
+                    $api_data->snippet = new \stdClass();
+                    $api_data->snippet->title = $data->title;
+                    if (preg_match('/user\/([\w-]+)/', $data->author_url, $author)) {
+                        $api_data->snippet->channelTitle = $author[1];
+                    }
+                    $api_data->snippet->thumbnails = new \stdClass();
+                    $api_data->snippet->thumbnails->default = new \stdClass();
+                    $api_data->snippet->thumbnails->default->url = $data->thumbnail_url;
 
-                $this->setAttribute('data-apidata', json_encode($api_data));
-            }
+                    $this->setAttribute('data-apidata', json_encode($api_data));
+                }
+            } catch (ClientException $e) {}
         }
 
         return parent::Field($properties);
