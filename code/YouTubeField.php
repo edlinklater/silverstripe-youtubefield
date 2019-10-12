@@ -20,8 +20,10 @@ class YouTubeField extends TextField
 			Requirements::javascript('https://apis.google.com/js/client.js?onload=googleApiClientReady');
 		} elseif (!empty($this->value) && self::url_parser($this->value)) {
 		    $client = new GuzzleHttp\Client();
-		    $res = $client->get('https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=' . $this->value . '&format=json');
-		    if ($res->getStatusCode() == '200' && $data = json_decode($res->getBody())) {
+		    try {
+                $res = $client->get('https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=' . $this->value . '&format=json');
+            } catch (Exception $e) {}
+		    if (isset($res) && $res->getStatusCode() == '200' && $data = json_decode($res->getBody())) {
 		        $api_data = new stdClass();
                 $api_data->id = $this->value;
                 $api_data->snippet = new stdClass();
