@@ -26,24 +26,7 @@ class YouTubeField extends TextField
             $this->setAttribute('data-apikey', $api_key);
             Requirements::javascript('https://apis.google.com/js/client.js?onload=googleApiClientReady');
         } elseif (!empty($this->value) && self::url_parser($this->value)) {
-            $client = new Client();
-            try {
-                $res = $client->get('https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=' . $this->value . '&format=json');
-                if ($res->getStatusCode() == '200' && $data = json_decode($res->getBody())) {
-                    $api_data = new \stdClass();
-                    $api_data->id = $this->value;
-                    $api_data->snippet = new \stdClass();
-                    $api_data->snippet->title = $data->title;
-                    if (preg_match('/user\/([\w-]+)/', $data->author_url, $author)) {
-                        $api_data->snippet->channelTitle = $author[1];
-                    }
-                    $api_data->snippet->thumbnails = new \stdClass();
-                    $api_data->snippet->thumbnails->default = new \stdClass();
-                    $api_data->snippet->thumbnails->default->url = $data->thumbnail_url;
-
-                    $this->setAttribute('data-apidata', json_encode($api_data));
-                }
-            } catch (ClientException $e) {}
+            $this->setAttribute('data-apidata', json_encode(static::get_video_information($this->value)));
         }
 
         return parent::Field($properties);
@@ -71,6 +54,28 @@ class YouTubeField extends TextField
     public function Type()
     {
         return 'text youtube';
+    }
+
+    public static function get_video_information($videoId)
+    {
+        $client = new Client();
+        try {
+            $res = $client->get('https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=' . $videoId . '&format=json');
+            if ($res->getStatusCode() == '200' && $data = json_decode($res->getBody())) {
+                $api_data = new \stdClass();
+                $api_data->id = $videoId;
+                $api_data->snippet = new \stdClass();
+                $api_data->snippet->title = $data->title;
+                if (preg_match('/user\/([\w-]+)/', $data->author_url, $author)) {
+                    $api_data->snippet->channelTitle = $author[1];
+                }
+                $api_data->snippet->thumbnails = new \stdClass();
+                $api_data->snippet->thumbnails->default = new \stdClass();
+                $api_data->snippet->thumbnails->default->url = $data->thumbnail_url;
+
+                return $api_data;
+            }
+        } catch (ClientException $e) {}
     }
 
     /**

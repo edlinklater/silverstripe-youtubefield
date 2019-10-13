@@ -23,6 +23,8 @@ view count) and provides information immediately (rather than after saving).
 ```php
 <?php
 
+use EdgarIndustries\YouTubeField\YouTubeField;
+
 class Page extends SiteTree
 {
 
@@ -32,7 +34,7 @@ class Page extends SiteTree
     
     public function getCMSFields() {
         $fields = parent::getCMSFields();
-        $fields->addFieldToTab('Root.Main', new \EdgarIndustries\YouTubeField\YouTubeField('VideoID', 'YouTube Video'));
+        $fields->addFieldToTab('Root.Main', new YouTubeField('VideoID', 'YouTube Video'));
         return $fields;
     }
     
