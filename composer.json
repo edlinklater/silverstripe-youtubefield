@@ -1,5 +1,5 @@
 {
-	"name": "edgarindustries/youtubefield",
+	"name": "toastnz/youtubefield",
 	"description": "Field for selecting YouTube videos. Takes various URL formats as input and stores the YouTube ID.",
 	"type": "silverstripe-vendormodule",
 	"keywords": ["silverstripe", "youtube", "formfield"],
@@ -12,7 +12,7 @@
 	],
 	"require": {
 		"silverstripe/framework": "^4",
-		"guzzlehttp/guzzle": "~6.0"
+		"guzzlehttp/guzzle": "^7"
 	},
 	"autoload": {
 		"psr-4": {
