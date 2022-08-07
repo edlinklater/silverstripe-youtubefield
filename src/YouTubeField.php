@@ -19,8 +19,8 @@ class YouTubeField extends TextField
 
     public function Field($properties = [])
     {
-        Requirements::css('edgarindustries/youtubefield:client/css/YouTubeField.css');
-        Requirements::javascript('edgarindustries/youtubefield:client/js/YouTubeField.js');
+        Requirements::css('toastnz/youtubefield:client/css/YouTubeField.css');
+        Requirements::javascript('toastnz/youtubefield:client/js/YouTubeField.js');
 
         if ($api_key = $this->config()->get('api_key')) {
             $this->setAttribute('data-apikey', $api_key);
