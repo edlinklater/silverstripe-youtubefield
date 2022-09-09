@@ -1,3 +1,5 @@
+**ABANDONED!** Use the fork [toastnz/youtubefield](https://github.com/toastnz/silverstripe-youtubefield).
+
 # YouTube Field for SilverStripe
 
 ## Introduction
